@@ -9,13 +9,12 @@
 import UIKit
 
 class HomeTableViewController: UITableViewController {
-
+    
     var tweetArray = [NSDictionary]()
     var numberOfTweet: Int!
-    
     let myRefreshControl = UIRefreshControl()
     
-    
+    //works
     override func viewDidLoad() {
         super.viewDidLoad()
         numberOfTweet = 20
@@ -30,7 +29,7 @@ class HomeTableViewController: UITableViewController {
         self.loadTweets()
     }
     @objc func loadTweets(){
-       
+        
         
         let myUrl = "https://api.twitter.com/1.1/statuses/home_timeline.json"
         let myParams = ["count": numberOfTweet]
@@ -43,11 +42,11 @@ class HomeTableViewController: UITableViewController {
             }
             self.tableView.reloadData()
             self.myRefreshControl.endRefreshing()
-
+            
         }, failure: {(Error) in
             print ("Could not retrive tweets! Oh no!")
         })
-    
+        
         
     }
     func loadMoreTweets(){
@@ -64,7 +63,7 @@ class HomeTableViewController: UITableViewController {
                 
             }
             self.tableView.reloadData()
-
+            
         }, failure: {(Error) in
             print ("Could not retrive tweets! Oh no!")
         })
@@ -89,14 +88,14 @@ class HomeTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) ->
-        UITableViewCell {
+    UITableViewCell {
         
-    let cell = tableView.dequeueReusableCell(withIdentifier: "tweetCell" , for: indexPath) as! TweetCellTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "tweetCell" , for: indexPath) as! TweetCellTableViewCell
         
         let user = tweetArray[indexPath.row]["user"] as! NSDictionary
         cell.userNameLabel.text = user["name"] as? String
         cell.tweetContent.text = tweetArray[indexPath.row]["text"] as? String
-    
+        
         let imageUrl = URL(string: (user["profile_image_url_https"] as? String)!)
         let data = try? Data(contentsOf: imageUrl!)
         
@@ -114,16 +113,16 @@ class HomeTableViewController: UITableViewController {
     
     
     // MARK: - Table view data source
-
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return tweetArray.count
     }
-
-
+    
+    
 }
